@@ -217,7 +217,7 @@ function App() {
                 if (!shownNotifs.includes(notif.id)) {
                   registration.showNotification('New Update from Taja Cart', {
                     body: notif.text,
-                    icon: '/favicon.svg'
+                    icon: '/logo.png'
                   });
                   newShown.push(notif.id);
                 }
