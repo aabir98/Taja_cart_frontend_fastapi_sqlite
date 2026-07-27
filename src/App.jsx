@@ -942,6 +942,92 @@ function App() {
         </div>
       )}
 
+      {/* Promotional Banners */}
+      <div className="hide-scrollbar" style={{
+        display: 'flex',
+        overflowX: 'auto',
+        gap: '16px',
+        padding: '0 16px',
+        margin: '8px 0',
+        scrollSnapType: 'x mandatory'
+      }}>
+        {/* Banner 1 */}
+        <div 
+          onClick={() => setActiveTab('category')}
+          style={{
+            flex: '0 0 100%',
+            scrollSnapAlign: 'center',
+            height: '135px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            cursor: 'pointer'
+          }}
+        >
+          <img 
+            src="/banner1.png" 
+            alt="Free and Fast Delivery" 
+            style={{
+              width: '115%',
+              height: 'auto',
+              flexShrink: 0,
+              mixBlendMode: 'darken'
+            }} 
+          />
+        </div>
+        {/* Banner 2 */}
+        <div 
+          onClick={() => setActiveTab('category')}
+          style={{
+            flex: '0 0 100%',
+            scrollSnapAlign: 'center',
+            height: '135px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            cursor: 'pointer'
+          }}
+        >
+          <img 
+            src="/banner2.png" 
+            alt="Farm Fresh" 
+            style={{
+              width: '115%',
+              height: 'auto',
+              flexShrink: 0,
+              mixBlendMode: 'darken'
+            }} 
+          />
+        </div>
+        {/* Banner 3 */}
+        <div 
+          onClick={() => setActiveTab('category')}
+          style={{
+            flex: '0 0 100%',
+            scrollSnapAlign: 'center',
+            height: '135px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            cursor: 'pointer'
+          }}
+        >
+          <img 
+            src="/banner3.png" 
+            alt="100% Trusted" 
+            style={{
+              width: '115%',
+              height: 'auto',
+              flexShrink: 0,
+              mixBlendMode: 'darken'
+            }} 
+          />
+        </div>
+      </div>
+
       {/* Deals of the Day */}
       <div className="section mt-2" style={{ padding: '16px 0', backgroundColor: 'var(--white)' }}>
         <div style={{ padding: '0 16px', marginBottom: '12px' }}>
@@ -1071,7 +1157,7 @@ function App() {
             {categories.filter(c => c.name !== 'All').map((cat, idx) => (
               <div 
                 key={idx} 
-                className={`category-sidebar-item ${activeCategory === cat.name || (activeCategory === 'All' && cat.name === 'Vegetables') ? 'active' : ''}`}
+                className={`category-sidebar-item ${activeCategory === cat.name || (activeCategory === 'All' && cat.name === 'Veggies') ? 'active' : ''}`}
                 onClick={() => {
                   // If clicking a category on the left, set it as active
                   // "All" is excluded, so this will always be a specific category
@@ -1089,7 +1175,7 @@ function App() {
           {/* Right Content */}
           <div className="category-content">
             <div className="product-grid">
-              {(categoryData[activeCategory === 'All' ? 'Vegetables' : activeCategory] || []).map((product, idx) => (
+              {(categoryData[activeCategory === 'All' ? 'Veggies' : activeCategory] || []).map((product, idx) => (
                 <div key={idx} className="product-card" style={{ minWidth: 'auto', width: '100%', maxWidth: '100%', margin: 0 }}>
                   <div className="product-image-container">
                     {product.image ? (
