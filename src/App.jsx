@@ -57,7 +57,7 @@ const OrderRatingWidget = ({ order, onReviewSubmitted }) => {
     }
     setSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${order.id}/rate`, {
+      const response = await fetch(`http://13.207.203.76:3000/api/orders/${order.id}/rate`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rating, review })
@@ -182,16 +182,16 @@ function App() {
     const fetchInventory = async () => {
       try {
         const [catRes, prodRes, dealsRes, offersRes, settingsRes, announcementsRes, reviewsRes, bannersRes, hubRes, notifRes] = await Promise.all([
-          fetch('http://localhost:3000/api/categories'),
-          fetch('http://localhost:3000/api/products'),
-          fetch('http://localhost:3000/api/deals'),
-          fetch('http://localhost:3000/api/offers'),
-          fetch('http://localhost:3000/api/settings'),
-          fetch('http://localhost:3000/api/announcements'),
-          fetch('http://localhost:3000/api/reviews/featured'),
-          fetch('http://localhost:3000/api/banners/active'),
-          fetch('http://localhost:3000/api/hubs'),
-          fetch('http://localhost:3000/api/notifications')
+          fetch('http://13.207.203.76:3000/api/categories'),
+          fetch('http://13.207.203.76:3000/api/products'),
+          fetch('http://13.207.203.76:3000/api/deals'),
+          fetch('http://13.207.203.76:3000/api/offers'),
+          fetch('http://13.207.203.76:3000/api/settings'),
+          fetch('http://13.207.203.76:3000/api/announcements'),
+          fetch('http://13.207.203.76:3000/api/reviews/featured'),
+          fetch('http://13.207.203.76:3000/api/banners/active'),
+          fetch('http://13.207.203.76:3000/api/hubs'),
+          fetch('http://13.207.203.76:3000/api/notifications')
         ]);
         const categories = await catRes.json();
         const products = await prodRes.json();
@@ -255,7 +255,7 @@ function App() {
   // Handle Search InputOrders and Addresses from Backend
   useEffect(() => {
     if (user && user.email) {
-      fetch(`http://localhost:3000/api/addresses/${user.email}`)
+      fetch(`http://13.207.203.76:3000/api/addresses/${user.email}`)
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data)) setSavedAddresses(data);
@@ -266,7 +266,7 @@ function App() {
     }
 
     if (user && user.phone) {
-      fetch(`http://localhost:3000/api/orders/user/${user.phone}`)
+      fetch(`http://13.207.203.76:3000/api/orders/user/${user.phone}`)
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data)) setPlacedOrders(data);
@@ -309,7 +309,7 @@ function App() {
   const handleDeleteAddress = async (id) => {
     if (window.confirm("Are you sure you want to delete this address?")) {
       try {
-        const response = await fetch(`http://localhost:3000/api/addresses/${id}`, { method: 'DELETE' });
+        const response = await fetch(`http://13.207.203.76:3000/api/addresses/${id}`, { method: 'DELETE' });
         if (response.ok) {
           setSavedAddresses(savedAddresses.filter(addr => addr.id !== id));
           if (selectedAddressId === id) setSelectedAddressId(null);
@@ -342,7 +342,7 @@ function App() {
     try {
       if (saveAddressLabel.trim() && user.email) {
         const addressStr = `${deliveryDetails.building ? deliveryDetails.building + ', ' : ''}${deliveryDetails.street}, ${deliveryDetails.locality}, ${deliveryDetails.city}, ${deliveryDetails.state}`;
-        fetch('http://localhost:3000/api/addresses', {
+        fetch('http://13.207.203.76:3000/api/addresses', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -368,7 +368,7 @@ function App() {
         }).catch(err => console.error("Error saving address:", err));
       }
 
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://13.207.203.76:3000/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newOrder)
@@ -401,7 +401,7 @@ function App() {
   const cancelOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to cancel this order?")) {
       try {
-        const response = await fetch(`http://localhost:3000/api/orders/${orderId}`, {
+        const response = await fetch(`http://13.207.203.76:3000/api/orders/${orderId}`, {
           method: 'DELETE'
         });
         if (response.ok) {
@@ -533,7 +533,7 @@ function App() {
     { name: 'All', iconUrl: '/category-icons/all.png' },
     ...categoryList.map(c => ({
       name: c.name,
-      iconUrl: c.image ? (c.image.startsWith('/uploads') ? `http://localhost:3000${c.image}` : c.image) : '/category-icons/all.png'
+      iconUrl: c.image ? (c.image.startsWith('/uploads') ? `http://13.207.203.76:3000${c.image}` : c.image) : '/category-icons/all.png'
     }))
   ];
 
@@ -542,7 +542,7 @@ function App() {
   const handleGoogleSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
     try {
-      const response = await fetch(`http://localhost:3000/api/customers/${decoded.email}`);
+      const response = await fetch(`http://13.207.203.76:3000/api/customers/${decoded.email}`);
       if (response.ok) {
         const customer = await response.json();
         setUser({ name: decoded.name, email: decoded.email, picture: decoded.picture, phone: customer.phone });
@@ -566,7 +566,7 @@ function App() {
     const finalUser = { ...tempUser, phone: phoneInput };
     
     try {
-      const response = await fetch('http://localhost:3000/api/customers', {
+      const response = await fetch('http://13.207.203.76:3000/api/customers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalUser)
@@ -835,7 +835,7 @@ function App() {
                   <div key={idx} className="product-card">
                     <div className="product-image-container">
                       {item.image ? (
-                        <img src={item.image?.startsWith('/uploads') ? `http://localhost:3000${item.image}` : item.image} alt={item.name} className="product-image" />
+                        <img src={item.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${item.image}` : item.image} alt={item.name} className="product-image" />
                       ) : (
                         <span style={{ fontSize: '48px' }}>{item.emoji}</span>
                       )}
@@ -903,7 +903,7 @@ function App() {
               <div key={idx} className="product-card">
                 <div className="product-image-container">
                   {product.image ? (
-                    <img src={product.image?.startsWith('/uploads') ? `http://localhost:3000${product.image}` : product.image} alt={product.name} className="product-image" />
+                    <img src={product.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${product.image}` : product.image} alt={product.name} className="product-image" />
                   ) : (
                     <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                   )}
@@ -1052,7 +1052,7 @@ function App() {
               <div key={idx} className="product-card">
                 <div className="product-image-container">
                   {product.image ? (
-                    <img src={product.image?.startsWith('/uploads') ? `http://localhost:3000${product.image}` : product.image} alt={product.name} className="product-image" />
+                    <img src={product.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${product.image}` : product.image} alt={product.name} className="product-image" />
                   ) : (
                     <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                   )}
@@ -1095,7 +1095,7 @@ function App() {
             {banners.map((banner, idx) => (
               <img 
                 key={idx} 
-                src={`http://localhost:3000${banner.image}`} 
+                src={`http://13.207.203.76:3000${banner.image}`} 
                 alt="Promo Banner" 
                 style={{ 
                   flex: '0 0 100%',
@@ -1179,7 +1179,7 @@ function App() {
                 <div key={idx} className="product-card" style={{ minWidth: 'auto', width: '100%', maxWidth: '100%', margin: 0 }}>
                   <div className="product-image-container">
                     {product.image ? (
-                      <img src={product.image?.startsWith('/uploads') ? `http://localhost:3000${product.image}` : product.image} alt={product.name} className="product-image" />
+                      <img src={product.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${product.image}` : product.image} alt={product.name} className="product-image" />
                     ) : (
                       <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                     )}
@@ -1245,7 +1245,7 @@ function App() {
               <div className="cart-items-section" style={{ padding: '0', backgroundColor: 'transparent', marginBottom: '24px' }}>
                 {cartDetails.items.map((item, idx) => (
                   <div key={idx} className="cart-item-row-new">
-                    <img src={item.image?.startsWith('/uploads') ? `http://localhost:3000${item.image}` : item.image} alt={item.name} className="cart-item-image" />
+                    <img src={item.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${item.image}` : item.image} alt={item.name} className="cart-item-image" />
                     <div className="cart-item-info">
                       <h4 className="cart-item-name">{item.name}</h4>
                       <p className="cart-item-qty">{item.quantity}</p>
