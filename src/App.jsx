@@ -204,25 +204,27 @@ function App() {
         const hubData = await hubRes.json();
         const notificationsData = await notifRes.json();
 
-        // Native Browser Notifications Logic
-        if ('Notification' in window) {
-          if (Notification.permission === 'default') {
-            Notification.requestPermission();
-          }
-          if (Notification.permission === 'granted') {
-            const shownNotifs = JSON.parse(localStorage.getItem('shown_browser_notifs') || '[]');
-            let newShown = [...shownNotifs];
-            notificationsData.forEach(notif => {
-              if (!shownNotifs.includes(notif.id)) {
-                new Notification(notif.title, {
-                  body: notif.message,
-                  icon: '/favicon.svg'
-                });
-                newShown.push(notif.id);
-              }
-            });
-            localStorage.setItem('shown_browser_notifs', JSON.stringify(newShown));
-          }
+        // Native Browser Notifications Logic (Mobile Support via Service Worker)
+        if ('Notification' in window && 'serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            if (Notification.permission === 'default') {
+              Notification.requestPermission();
+            }
+            if (Notification.permission === 'granted') {
+              const shownNotifs = JSON.parse(localStorage.getItem('shown_browser_notifs') || '[]');
+              let newShown = [...shownNotifs];
+              notificationsData.forEach(notif => {
+                if (!shownNotifs.includes(notif.id)) {
+                  registration.showNotification(notif.title, {
+                    body: notif.message,
+                    icon: '/favicon.svg'
+                  });
+                  newShown.push(notif.id);
+                }
+              });
+              localStorage.setItem('shown_browser_notifs', JSON.stringify(newShown));
+            }
+          });
         }
         
         setDealsOfTheDay(deals);
