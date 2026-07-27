@@ -17,7 +17,7 @@ function Notifications() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://13.207.203.76:3000/api/admin/notifications');
+      const response = await fetch('https://api.tajacart.in/api/admin/notifications');
       const data = await response.json();
       setNotifications(data);
     } catch (error) {
@@ -31,8 +31,8 @@ function Notifications() {
     e.preventDefault();
     try {
       const url = editingId 
-        ? `http://13.207.203.76:3000/api/admin/notifications/${editingId}`
-        : 'http://13.207.203.76:3000/api/admin/notifications';
+        ? `https://api.tajacart.in/api/admin/notifications/${editingId}`
+        : 'https://api.tajacart.in/api/admin/notifications';
         
       const method = editingId ? 'PUT' : 'POST';
       
@@ -57,7 +57,7 @@ function Notifications() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this notification?')) {
       try {
-        const response = await fetch(`http://13.207.203.76:3000/api/admin/notifications/${id}`, {
+        const response = await fetch(`https://api.tajacart.in/api/admin/notifications/${id}`, {
           method: 'DELETE',
         });
         if (response.ok) {
@@ -71,7 +71,7 @@ function Notifications() {
 
   const handleToggleActive = async (notification) => {
     try {
-      const response = await fetch(`http://13.207.203.76:3000/api/admin/notifications/${notification.id}`, {
+      const response = await fetch(`https://api.tajacart.in/api/admin/notifications/${notification.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

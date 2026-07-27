@@ -21,21 +21,21 @@ function Store() {
   }, []);
 
   const fetchCategories = async () => {
-    const res = await fetch('http://13.207.203.76:3000/api/categories');
+    const res = await fetch('https://api.tajacart.in/api/categories');
     const data = await res.json();
     setCategories(data);
     if (!activeCategory && data.length > 0) setActiveCategory(data[0].id);
   };
 
   const fetchProducts = async () => {
-    const res = await fetch('http://13.207.203.76:3000/api/products');
+    const res = await fetch('https://api.tajacart.in/api/products');
     const data = await res.json();
     setProducts(data);
     setLoading(false);
   };
 
   const fetchDeals = async () => {
-    const res = await fetch('http://13.207.203.76:3000/api/deals');
+    const res = await fetch('https://api.tajacart.in/api/deals');
     const data = await res.json();
     setDeals(data);
   };
@@ -47,12 +47,12 @@ function Store() {
     if (!name) return;
 
     if (editingCategory.id) {
-      await fetch(`http://13.207.203.76:3000/api/categories/${editingCategory.id}`, {
+      await fetch(`https://api.tajacart.in/api/categories/${editingCategory.id}`, {
         method: 'PUT',
         body: formData
       });
     } else {
-      await fetch(`http://13.207.203.76:3000/api/categories`, {
+      await fetch(`https://api.tajacart.in/api/categories`, {
         method: 'POST',
         body: formData
       });
@@ -63,7 +63,7 @@ function Store() {
 
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Delete this category and all its products?")) {
-      await fetch(`http://13.207.203.76:3000/api/categories/${id}`, { method: 'DELETE' });
+      await fetch(`https://api.tajacart.in/api/categories/${id}`, { method: 'DELETE' });
       fetchCategories();
       fetchProducts();
       if (activeCategory === id) setActiveCategory(null);
@@ -76,12 +76,12 @@ function Store() {
     formData.append('category_id', activeCategory);
 
     if (editingProduct.id) {
-      await fetch(`http://13.207.203.76:3000/api/products/${editingProduct.id}`, {
+      await fetch(`https://api.tajacart.in/api/products/${editingProduct.id}`, {
         method: 'PUT',
         body: formData
       });
     } else {
-      await fetch(`http://13.207.203.76:3000/api/products`, {
+      await fetch(`https://api.tajacart.in/api/products`, {
         method: 'POST',
         body: formData
       });
@@ -92,7 +92,7 @@ function Store() {
 
   const handleDeleteProduct = async (id) => {
     if (window.confirm("Delete this product?")) {
-      await fetch(`http://13.207.203.76:3000/api/products/${id}`, { method: 'DELETE' });
+      await fetch(`https://api.tajacart.in/api/products/${id}`, { method: 'DELETE' });
       fetchProducts();
     }
   };
@@ -102,12 +102,12 @@ function Store() {
     const formData = new FormData(e.target);
 
     if (editingDeal.id) {
-      await fetch(`http://13.207.203.76:3000/api/deals/${editingDeal.id}`, {
+      await fetch(`https://api.tajacart.in/api/deals/${editingDeal.id}`, {
         method: 'PUT',
         body: formData
       });
     } else {
-      const res = await fetch(`http://13.207.203.76:3000/api/deals`, {
+      const res = await fetch(`https://api.tajacart.in/api/deals`, {
         method: 'POST',
         body: formData
       });
@@ -123,7 +123,7 @@ function Store() {
 
   const handleDeleteDeal = async (id) => {
     if (window.confirm("Delete this deal?")) {
-      await fetch(`http://13.207.203.76:3000/api/deals/${id}`, { method: 'DELETE' });
+      await fetch(`https://api.tajacart.in/api/deals/${id}`, { method: 'DELETE' });
       fetchDeals();
     }
   };
@@ -199,7 +199,7 @@ function Store() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
                   {deals.map(p => (
                     <div key={p.id} style={{ border: '1px solid #fde047', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column', backgroundColor: '#fefce8' }}>
-                      <img src={p.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${p.image}` : p.image} alt={p.name} style={{ width: '100%', height: '100px', objectFit: 'contain', marginBottom: '12px' }} />
+                      <img src={p.image?.startsWith('/uploads') ? `https://api.tajacart.in${p.image}` : p.image} alt={p.name} style={{ width: '100%', height: '100px', objectFit: 'contain', marginBottom: '12px' }} />
                       <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#854d0e' }}>{p.name}</h4>
                       <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#a16207' }}>{p.quantity}</p>
                       
@@ -238,7 +238,7 @@ function Store() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
                   {currentProducts.map(p => (
                     <div key={p.id} style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column' }}>
-                      <img src={p.image?.startsWith('/uploads') ? `http://13.207.203.76:3000${p.image}` : p.image} alt={p.name} style={{ width: '100%', height: '100px', objectFit: 'contain', marginBottom: '12px' }} />
+                      <img src={p.image?.startsWith('/uploads') ? `https://api.tajacart.in${p.image}` : p.image} alt={p.name} style={{ width: '100%', height: '100px', objectFit: 'contain', marginBottom: '12px' }} />
                       <h4 style={{ margin: '0 0 4px 0', fontSize: '14px' }}>{p.name}</h4>
                       <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#64748b' }}>{p.quantity}</p>
                       

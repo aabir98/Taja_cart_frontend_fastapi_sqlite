@@ -15,8 +15,8 @@ function AdminDashboard() {
   const fetchData = async () => {
     try {
       const [ordersRes, customersRes] = await Promise.all([
-        fetch('http://13.207.203.76:3000/api/orders'),
-        fetch('http://13.207.203.76:3000/api/customers')
+        fetch('https://api.tajacart.in/api/orders'),
+        fetch('https://api.tajacart.in/api/customers')
       ]);
       const ordersData = await ordersRes.json();
       const customersData = await customersRes.json();

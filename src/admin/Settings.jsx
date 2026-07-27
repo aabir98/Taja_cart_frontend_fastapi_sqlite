@@ -13,7 +13,7 @@ function Settings() {
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch('http://13.207.203.76:3000/api/settings');
+      const response = await fetch('https://api.tajacart.in/api/settings');
       if (response.ok) {
         const data = await response.json();
         const minOrderSetting = data.find(s => s.key === 'MIN_ORDER_FOR_FREE_DELIVERY');
@@ -34,12 +34,12 @@ function Settings() {
     setSaving(true);
     try {
       await Promise.all([
-        fetch('http://13.207.203.76:3000/api/settings', {
+        fetch('https://api.tajacart.in/api/settings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ key: 'MIN_ORDER_FOR_FREE_DELIVERY', value: minOrder })
         }),
-        fetch('http://13.207.203.76:3000/api/settings', {
+        fetch('https://api.tajacart.in/api/settings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ key: 'DELIVERY_CHARGE', value: deliveryCharge })

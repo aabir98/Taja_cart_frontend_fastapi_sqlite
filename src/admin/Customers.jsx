@@ -14,7 +14,7 @@ function Customers() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://13.207.203.76:3000/api/customers');
+      const response = await fetch('https://api.tajacart.in/api/customers');
       const data = await response.json();
       setCustomers(data);
     } catch (error) {
@@ -28,7 +28,7 @@ function Customers() {
     setSelectedCustomer(customer);
     setOrdersLoading(true);
     try {
-      const response = await fetch(`http://13.207.203.76:3000/api/orders/user/${customer.phone}`);
+      const response = await fetch(`https://api.tajacart.in/api/orders/user/${customer.phone}`);
       const data = await response.json();
       setCustomerOrders(data);
     } catch (err) {
