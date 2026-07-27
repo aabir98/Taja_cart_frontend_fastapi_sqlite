@@ -215,8 +215,8 @@ function App() {
               let newShown = [...shownNotifs];
               notificationsData.forEach(notif => {
                 if (!shownNotifs.includes(notif.id)) {
-                  registration.showNotification(notif.title, {
-                    body: notif.message,
+                  registration.showNotification('New Update from Taja Cart', {
+                    body: notif.text,
                     icon: '/favicon.svg'
                   });
                   newShown.push(notif.id);
