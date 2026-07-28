@@ -108,6 +108,7 @@ const OrderRatingWidget = ({ order, onReviewSubmitted }) => {
       >
         {submitting ? 'Submitting...' : 'Submit Review'}
       </button>
+    </div>
   );
 };
 
