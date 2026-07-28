@@ -1,0 +1,21 @@
+{
+  "name": "Taja Cart",
+  "short_name": "Taja Cart",
+  "description": "Taja Cart - Your premium destination for fresh groceries, daily deals, and super-fast delivery right to your door.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
