@@ -395,7 +395,7 @@ function OffersEvents() {
       </div>
       
       <div className="admin-page-content" style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px' }}>
           {tabs.map(tab => (
             <button
               key={tab}
