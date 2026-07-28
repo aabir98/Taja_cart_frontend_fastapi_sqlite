@@ -108,6 +108,51 @@ const OrderRatingWidget = ({ order, onReviewSubmitted }) => {
       >
         {submitting ? 'Submitting...' : 'Submit Review'}
       </button>
+  );
+};
+
+const TajaCartLoader = () => {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      width: '100%',
+      backgroundColor: '#f0fdf4',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      zIndex: 9999
+    }}>
+      <div style={{
+        animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
+        <img 
+          src="/logo.png" 
+          alt="Taja Cart" 
+          style={{ width: '100px', height: '100px', objectFit: 'contain', marginBottom: '16px' }} 
+        />
+        <div style={{ color: '#16a34a', fontSize: '22px', fontWeight: 'bold' }}>
+          Taja Cart
+        </div>
+        <div style={{ color: '#15803d', fontSize: '14px', marginTop: '4px' }}>
+          Preparing your fresh store...
+        </div>
+      </div>
+      <style>
+        {`
+          @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+          }
+        `}
+      </style>
     </div>
   );
 };
@@ -119,6 +164,7 @@ function App() {
   const [couponCode, setCouponCode] = useLocalStorage('couponCode', '');
   const [appliedCoupon, setAppliedCoupon] = useLocalStorage('appliedCoupon', null);
   const [couponError, setCouponError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   // Delivery Details State
   const [deliveryDetails, setDeliveryDetails] = useLocalStorage('deliveryDetails', {
@@ -181,28 +227,21 @@ function App() {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const [catRes, prodRes, dealsRes, offersRes, settingsRes, announcementsRes, reviewsRes, bannersRes, hubRes, notifRes] = await Promise.all([
-          fetch('https://api.tajacart.in/api/categories'),
-          fetch('https://api.tajacart.in/api/products'),
-          fetch('https://api.tajacart.in/api/deals'),
-          fetch('https://api.tajacart.in/api/offers'),
-          fetch('https://api.tajacart.in/api/settings'),
-          fetch('https://api.tajacart.in/api/announcements'),
-          fetch('https://api.tajacart.in/api/reviews/featured'),
-          fetch('https://api.tajacart.in/api/banners/active'),
-          fetch('https://api.tajacart.in/api/hubs'),
-          fetch('https://api.tajacart.in/api/notifications')
-        ]);
-        const categories = await catRes.json();
-        const products = await prodRes.json();
-        const deals = await dealsRes.json();
-        const offers = await offersRes.json();
-        const settings = await settingsRes.json();
-        const announcements = await announcementsRes.json();
-        const reviews = await reviewsRes.json();
-        const activeBanners = await bannersRes.json();
-        const hubData = await hubRes.json();
-        const notificationsData = await notifRes.json();
+        const res = await fetch('https://api.tajacart.in/api/home-feed');
+        const data = await res.json();
+        
+        const {
+          categories,
+          products,
+          deals,
+          offers,
+          settings,
+          announcements,
+          reviews,
+          banners: activeBanners,
+          hubs: hubData,
+          notifications: notificationsData
+        } = data;
 
         // Native Browser Notifications Logic (Mobile Support via Service Worker)
         if ('Notification' in window && 'serviceWorker' in navigator) {
@@ -254,8 +293,10 @@ function App() {
         
         setCategoryData(newCategoryData);
         setCategoryList(categories);
+        setIsLoading(false);
       } catch (err) {
         console.error('Error fetching inventory:', err);
+        setIsLoading(false);
       }
     };
     fetchInventory();
@@ -634,6 +675,10 @@ function App() {
   const isOutOfRange = activeHubs.length > 0 && deliveryDetails.lat && deliveryDetails.lng 
     ? !activeHubs.some(hub => getDistanceFromLatLonInKm(deliveryDetails.lat, deliveryDetails.lng, hub.lat, hub.lng) <= hub.radius_km)
     : false;
+
+  if (isLoading) {
+    return <TajaCartLoader />;
+  }
 
   return (
     <div className="app-container">
