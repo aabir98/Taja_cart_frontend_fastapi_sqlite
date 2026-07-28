@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android App Bundle (Release)
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: npm ci || npm install --legacy-peer-deps
 
       - name: Build Web App
         run: npm run build
@@ -33,15 +33,15 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build Debug APK
+      - name: Build Release AAB
         working-directory: ./android
         run: |
           sed -i 's/\r$//' gradlew
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew bundleRelease -Pandroid.injected.signing.store.file=taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
 
-      - name: Upload APK Artifact
+      - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TajaCart-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: TajaCart-Release-AAB
+          path: android/app/build/outputs/bundle/release/app-release.aab

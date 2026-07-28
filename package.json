@@ -12,6 +12,7 @@
   "dependencies": {
     "@capacitor/core": "^8.4.1",
     "@capacitor/status-bar": "^8.0.2",
+    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.4",
     "@react-oauth/google": "^0.13.5",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",

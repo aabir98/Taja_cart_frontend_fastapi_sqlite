@@ -5,6 +5,11 @@
   "plugins": {
     "StatusBar": {
       "overlaysWebView": true
+    },
+    "GoogleAuth": {
+      "scopes": ["profile", "email"],
+      "serverClientId": "718562371937-s5c1s20vgga8fpisetsdseef6tnh80cq.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
     }
   }
 }

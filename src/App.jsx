@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { Capacitor } from '@capacitor/core';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { jwtDecode } from "jwt-decode";
 import AddressMap from './components/AddressMap';
 import { generateInvoice } from './utils/generateInvoice';
@@ -223,6 +225,13 @@ function App() {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
     return R * c; 
   };
+
+  // Initialize Google Auth for native platform
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      GoogleAuth.initialize();
+    }
+  }, []);
 
   // Fetch Inventory from Backend
   useEffect(() => {
@@ -606,6 +615,25 @@ function App() {
   ];
 
   const currentProductList = activeCategory === 'All' ? allList : (categoryData[activeCategory] || []);
+
+  const handleNativeGoogleLogin = async () => {
+    try {
+      const user = await GoogleAuth.signIn();
+      const response = await fetch(`https://api.tajacart.in/api/customers/${user.email}`);
+      if (response.ok) {
+        const customer = await response.json();
+        setUser({ name: user.name, email: user.email, picture: user.imageUrl, phone: customer.phone });
+        setDeliveryDetails(prev => ({ ...prev, name: user.name, phone: customer.phone }));
+        setIsAuthModalOpen(false);
+      } else {
+        setTempUser({ name: user.name, email: user.email, picture: user.imageUrl });
+        setIsCollectingPhone(true);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Google Login Failed on App");
+    }
+  };
 
   const handleGoogleSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
@@ -1856,10 +1884,22 @@ function App() {
             <div className="auth-body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0' }}>
               {!isCollectingPhone ? (
                 <>
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                  />
+                  {Capacitor.isNativePlatform() ? (
+                    <button 
+                      onClick={handleNativeGoogleLogin}
+                      style={{ 
+                        display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: 'white', color: '#334155', border: '1px solid #cbd5e1', padding: '12px 24px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                      }}
+                    >
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" style={{ width: '20px', height: '20px' }} />
+                      Sign in with Google
+                    </button>
+                  ) : (
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                    />
+                  )}
                   <p className="auth-terms" style={{ marginTop: '20px' }}>
                     By continuing, you agree to our Terms of Service & Privacy Policy
                   </p>
