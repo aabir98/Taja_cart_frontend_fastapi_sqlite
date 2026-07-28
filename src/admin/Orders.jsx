@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { generateInvoice } from '../utils/generateInvoice';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
   
   // ETA State
   const [activeEtaOrder, setActiveEtaOrder] = useState(null);
@@ -15,6 +17,14 @@ function Orders() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [dateFilter, setDateFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('All');
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const statusParam = searchParams.get('status');
+    if (statusParam) {
+      setStatusFilter(statusParam);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     fetchOrders();

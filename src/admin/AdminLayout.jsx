@@ -24,6 +24,50 @@ function AdminLayout() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      setupPushNotifications();
+    }
+  }, [isAuthenticated]);
+
+  const setupPushNotifications = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') return;
+      
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      
+      const response = await fetch('https://api.tajacart.in/api/admin/vapid_public_key');
+      if (!response.ok) return;
+      const { public_key } = await response.json();
+      
+      function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+          outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+      }
+      
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(public_key)
+      });
+      
+      await fetch('https://api.tajacart.in/api/admin/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(subscription.toJSON())
+      });
+    } catch (e) {
+      console.error('Push notification setup failed', e);
+    }
+  };
+
   const handleLogin = () => {
     setIsAuthenticated(true);
     sessionStorage.setItem('adminAuth', 'true');
