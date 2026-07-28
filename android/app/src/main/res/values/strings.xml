@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Taja Cart</string>
-    <string name="title_activity_main">Taja Cart</string>
-    <string name="package_name">com.taja.cart</string>
-    <string name="custom_url_scheme">com.taja.cart</string>
-</resources>
