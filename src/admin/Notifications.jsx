@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, Plus, Trash2, Edit2, CheckCircle, XCircle } from 'lucide-react';
+import { Bell, Plus, Trash2, Edit2, CheckCircle, XCircle, ShoppingBag, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Notifications() {
-  const [notifications, setNotifications] = useState([]);
+  const [activeTab, setActiveTab] = useState('alerts'); // 'alerts' or 'announcements'
+  const [announcements, setAnnouncements] = useState([]);
+  const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const navigate = useNavigate();
   
   // Form State
   const [text, setText] = useState('');
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    fetchNotifications();
+    fetchData();
+    // Poll for new alerts every 30s
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchNotifications = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('https://api.tajacart.in/api/admin/notifications');
-      const data = await response.json();
-      setNotifications(data);
+      const [annRes, alertRes] = await Promise.all([
+        fetch('https://api.tajacart.in/api/admin/notifications'),
+        fetch('https://api.tajacart.in/api/admin/alerts')
+      ]);
+      if (annRes.ok) setAnnouncements(await annRes.json());
+      if (alertRes.ok) setAlerts(await alertRes.json());
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -38,16 +48,14 @@ function Notifications() {
       
       const response = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, is_active: isActive }),
       });
       
       if (response.ok) {
         setIsModalOpen(false);
         resetForm();
-        fetchNotifications();
+        fetchData();
       }
     } catch (error) {
       console.error('Error saving notification:', error);
@@ -57,12 +65,8 @@ function Notifications() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this notification?')) {
       try {
-        const response = await fetch(`https://api.tajacart.in/api/admin/notifications/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          fetchNotifications();
-        }
+        const response = await fetch(`https://api.tajacart.in/api/admin/notifications/${id}`, { method: 'DELETE' });
+        if (response.ok) fetchData();
       } catch (error) {
         console.error('Error deleting notification:', error);
       }
@@ -73,16 +77,32 @@ function Notifications() {
     try {
       const response = await fetch(`https://api.tajacart.in/api/admin/notifications/${notification.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: notification.text, is_active: !notification.is_active }),
       });
-      if (response.ok) {
-        fetchNotifications();
-      }
+      if (response.ok) fetchData();
     } catch (error) {
       console.error('Error toggling notification:', error);
+    }
+  };
+
+  const handleAlertClick = async (alert) => {
+    if (!alert.is_read) {
+      try {
+        await fetch(`https://api.tajacart.in/api/admin/alerts/${alert.id}/read`, { method: 'PATCH' });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    navigate('/admin/orders?status=Placed');
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      await fetch('https://api.tajacart.in/api/admin/alerts/read_all', { method: 'PATCH' });
+      fetchData();
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -99,87 +119,177 @@ function Notifications() {
     setIsActive(false);
   };
 
-  if (loading) {
+  if (loading && alerts.length === 0 && announcements.length === 0) {
     return <div className="admin-page-container"><div className="loading">Loading notifications...</div></div>;
   }
+
+  const unreadCount = alerts.filter(a => !a.is_read).length;
 
   return (
     <div className="admin-page-container">
       <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Bell size={28} color="var(--primary)" />
-          <h1 className="admin-page-title" style={{ margin: 0 }}>Notification Management</h1>
+          <h1 className="admin-page-title" style={{ margin: 0 }}>Notification Center</h1>
         </div>
+        {activeTab === 'announcements' && (
+          <button 
+            className="admin-btn-primary" 
+            onClick={() => { resetForm(); setIsModalOpen(true); }}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <Plus size={20} /> Add Announcement
+          </button>
+        )}
+        {activeTab === 'alerts' && unreadCount > 0 && (
+          <button 
+            className="admin-btn-secondary" 
+            onClick={markAllAsRead}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <Check size={20} /> Mark all as read
+          </button>
+        )}
+      </div>
+
+      <div className="admin-tabs" style={{ display: 'flex', gap: '16px', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
         <button 
-          className="admin-btn-primary" 
-          onClick={() => { resetForm(); setIsModalOpen(true); }}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          onClick={() => setActiveTab('alerts')}
+          style={{ 
+            background: 'none', border: 'none', padding: '8px 16px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
+            color: activeTab === 'alerts' ? 'var(--primary)' : '#64748b',
+            borderBottom: activeTab === 'alerts' ? '3px solid var(--primary)' : '3px solid transparent',
+            marginBottom: '-13px',
+            display: 'flex', alignItems: 'center', gap: '8px'
+          }}
         >
-          <Plus size={20} /> Add Notification
+          Order Alerts
+          {unreadCount > 0 && (
+            <span style={{ backgroundColor: '#ef4444', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '12px' }}>
+              {unreadCount}
+            </span>
+          )}
+        </button>
+        <button 
+          onClick={() => setActiveTab('announcements')}
+          style={{ 
+            background: 'none', border: 'none', padding: '8px 16px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer',
+            color: activeTab === 'announcements' ? 'var(--primary)' : '#64748b',
+            borderBottom: activeTab === 'announcements' ? '3px solid var(--primary)' : '3px solid transparent',
+            marginBottom: '-13px'
+          }}
+        >
+          Customer Announcements
         </button>
       </div>
 
       <div className="admin-card">
-        {notifications.length === 0 ? (
-          <div className="empty-state" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
-            <Bell size={48} style={{ opacity: 0.2, marginBottom: '16px' }} />
-            <p>No notifications created yet.</p>
+        {activeTab === 'alerts' ? (
+          <div>
+            {alerts.length === 0 ? (
+              <div className="empty-state" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
+                <Bell size={48} style={{ opacity: 0.2, marginBottom: '16px' }} />
+                <p>No new orders yet.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', backgroundColor: '#f1f5f9' }}>
+                {alerts.map((alert) => (
+                  <div 
+                    key={alert.id}
+                    onClick={() => handleAlertClick(alert)}
+                    style={{ 
+                      padding: '16px 24px', 
+                      backgroundColor: alert.is_read ? 'white' : '#ecfdf5',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '16px',
+                      transition: 'background-color 0.2s ease',
+                      borderLeft: alert.is_read ? '4px solid transparent' : '4px solid var(--primary)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alert.is_read ? '#f8fafc' : '#d1fae5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = alert.is_read ? 'white' : '#ecfdf5'}
+                  >
+                    <div style={{ backgroundColor: alert.is_read ? '#f1f5f9' : '#dcfce7', padding: '12px', borderRadius: '50%' }}>
+                      <ShoppingBag size={24} color={alert.is_read ? '#64748b' : 'var(--primary)'} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: alert.is_read ? 'normal' : '600', color: '#1e293b' }}>
+                        {alert.text}
+                      </p>
+                      <span style={{ fontSize: '13px', color: '#64748b' }}>
+                        {new Date(alert.created_at).toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="table-responsive">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Notification Text</th>
-                  <th>Status</th>
-                  <th>Date Created</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notifications.map((notif) => (
-                  <tr key={notif.id}>
-                    <td>#{notif.id}</td>
-                    <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {notif.text}
-                    </td>
-                    <td>
-                      <span 
-                        className={`status-badge ${notif.is_active ? 'active' : 'inactive'}`}
-                        style={{ 
-                          cursor: 'pointer',
-                          backgroundColor: notif.is_active ? '#dcfce7' : '#f1f5f9',
-                          color: notif.is_active ? '#166534' : '#64748b',
-                          padding: '4px 12px',
-                          borderRadius: '20px',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}
-                        onClick={() => handleToggleActive(notif)}
-                      >
-                        {notif.is_active ? <CheckCircle size={14} /> : <XCircle size={14} />}
-                        {notif.is_active ? 'Active (Shown to Users)' : 'Inactive'}
-                      </span>
-                    </td>
-                    <td>{new Date(notif.created_at).toLocaleDateString()}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <button className="action-btn edit" onClick={() => openEditModal(notif)} title="Edit">
-                          <Edit2 size={18} />
-                        </button>
-                        <button className="action-btn delete" onClick={() => handleDelete(notif.id)} title="Delete">
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div>
+            {announcements.length === 0 ? (
+              <div className="empty-state" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
+                <Bell size={48} style={{ opacity: 0.2, marginBottom: '16px' }} />
+                <p>No announcements created yet.</p>
+              </div>
+            ) : (
+              <div className="table-responsive">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Announcement Text</th>
+                      <th>Status</th>
+                      <th>Date Created</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {announcements.map((notif) => (
+                      <tr key={notif.id}>
+                        <td>#{notif.id}</td>
+                        <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {notif.text}
+                        </td>
+                        <td>
+                          <span 
+                            className={`status-badge ${notif.is_active ? 'active' : 'inactive'}`}
+                            style={{ 
+                              cursor: 'pointer',
+                              backgroundColor: notif.is_active ? '#dcfce7' : '#f1f5f9',
+                              color: notif.is_active ? '#166534' : '#64748b',
+                              padding: '4px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: 'bold',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                            onClick={() => handleToggleActive(notif)}
+                          >
+                            {notif.is_active ? <CheckCircle size={14} /> : <XCircle size={14} />}
+                            {notif.is_active ? 'Active (Shown to Users)' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td>{new Date(notif.created_at).toLocaleDateString()}</td>
+                        <td>
+                          <div className="action-buttons">
+                            <button className="action-btn edit" onClick={() => openEditModal(notif)} title="Edit">
+                              <Edit2 size={18} />
+                            </button>
+                            <button className="action-btn delete" onClick={() => handleDelete(notif.id)} title="Delete">
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -188,19 +298,19 @@ function Notifications() {
         <div className="admin-modal-overlay">
           <div className="admin-modal" style={{ maxWidth: '500px' }}>
             <div className="admin-modal-header">
-              <h2>{editingId ? 'Edit Notification' : 'Create Notification'}</h2>
+              <h2>{editingId ? 'Edit Announcement' : 'Create Announcement'}</h2>
               <button className="close-btn" onClick={() => setIsModalOpen(false)}>&times;</button>
             </div>
             <div className="admin-modal-body">
               <form onSubmit={handleSave}>
                 <div className="form-group" style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Notification Text</label>
+                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Announcement Text</label>
                   <textarea 
                     value={text} 
                     onChange={(e) => setText(e.target.value)} 
                     required 
                     className="admin-input" 
-                    placeholder="Enter the notification message..."
+                    placeholder="Enter the announcement message..."
                     rows={4}
                     style={{ width: '100%', resize: 'vertical' }}
                   ></textarea>
@@ -219,7 +329,7 @@ function Notifications() {
                 
                 <div className="admin-modal-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                   <button type="button" className="admin-btn-secondary" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                  <button type="submit" className="admin-btn-primary">Save Notification</button>
+                  <button type="submit" className="admin-btn-primary">Save Announcement</button>
                 </div>
               </form>
             </div>

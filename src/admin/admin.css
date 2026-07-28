@@ -55,12 +55,23 @@
 .admin-nav-link {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 24px;
   color: var(--admin-text-light);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
-  gap: 12px;
+}
+
+.admin-sidebar-badge {
+  background-color: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
 }
 
 .admin-nav-link:hover, .admin-nav-link.active {

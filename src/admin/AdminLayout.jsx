@@ -14,6 +14,7 @@ import './admin.css';
 function AdminLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [unreadAlertsCount, setUnreadAlertsCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -27,8 +28,24 @@ function AdminLayout() {
   useEffect(() => {
     if (isAuthenticated) {
       setupPushNotifications();
+      fetchUnreadAlerts();
+      const interval = setInterval(fetchUnreadAlerts, 30000);
+      return () => clearInterval(interval);
     }
   }, [isAuthenticated]);
+
+  const fetchUnreadAlerts = async () => {
+    try {
+      const res = await fetch('https://api.tajacart.in/api/admin/alerts');
+      if (res.ok) {
+        const data = await res.json();
+        const count = data.filter(a => !a.is_read).length;
+        setUnreadAlertsCount(count);
+      }
+    } catch (e) {
+      console.error('Failed to fetch admin alerts', e);
+    }
+  };
 
   const setupPushNotifications = async () => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
@@ -127,8 +144,13 @@ function AdminLayout() {
               className={`admin-nav-link ${location.pathname === link.path ? 'active' : ''}`}
               onClick={closeSidebar}
             >
-              {link.icon}
-              <span>{link.name}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {link.icon}
+                <span>{link.name}</span>
+              </div>
+              {link.name === 'Notifications' && unreadAlertsCount > 0 && (
+                <span className="admin-sidebar-badge">{unreadAlertsCount}</span>
+              )}
             </Link>
           ))}
         </nav>
