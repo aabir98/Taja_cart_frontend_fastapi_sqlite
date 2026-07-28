@@ -395,7 +395,7 @@ function OffersEvents() {
       </div>
       
       <div className="admin-page-content" style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px' }}>
+        <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {tabs.map(tab => (
             <button
               key={tab}
@@ -408,7 +408,9 @@ function OffersEvents() {
                 borderRadius: '8px',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                transition: 'all 0.2s'
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+                flexShrink: 0
               }}
             >
               {tab}
@@ -416,19 +418,19 @@ function OffersEvents() {
           ))}
         </div>
 
-        <div style={{ backgroundColor: 'white', padding: '24px', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', border: '1px solid #e2e8f0', minHeight: '300px' }}>
+        <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', border: '1px solid #e2e8f0', minHeight: '300px', overflowX: 'hidden' }}>
           {activeTab === 'Offers' ? (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <h2 style={{ margin: 0, color: '#334155' }}>Manage Offers (Coupons)</h2>
-                <button onClick={() => openOfferModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button onClick={() => openOfferModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   + Add New Offer
                 </button>
               </div>
 
               {/* FIRST20 Toggle */}
-              <div style={{ padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #cbd5e1', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
+              <div style={{ padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #cbd5e1', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ flex: '1 1 200px' }}>
                   <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', color: '#0f172a' }}>FIRST20 (Welcome Bonus)</h3>
                   <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>Applies a 20% discount for the user's first 2 orders.</p>
                 </div>
@@ -442,7 +444,8 @@ function OffersEvents() {
                     borderRadius: '20px', 
                     fontWeight: 'bold', 
                     cursor: 'pointer',
-                    minWidth: '80px'
+                    minWidth: '80px',
+                    flexShrink: 0
                   }}
                 >
                   {first20Active ? 'ON' : 'OFF'}
@@ -476,9 +479,9 @@ function OffersEvents() {
             </div>
           ) : activeTab === 'Announcements' ? (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <h2 style={{ margin: 0, color: '#334155' }}>Manage Announcements</h2>
-                <button onClick={() => openAnnouncementModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button onClick={() => openAnnouncementModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   + Add Announcement
                 </button>
               </div>
@@ -503,9 +506,9 @@ function OffersEvents() {
             </div>
           ) : activeTab === 'Reviews' ? (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <h2 style={{ margin: 0, color: '#334155' }}>Manage Reviews</h2>
-                <button onClick={() => openReviewModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button onClick={() => openReviewModal()} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   + Add Dummy Review
                 </button>
               </div>
@@ -544,9 +547,9 @@ function OffersEvents() {
             </div>
           ) : activeTab === 'Banners' ? (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '12px' }}>
                 <h2 style={{ margin: 0, color: '#334155' }}>Manage Banners</h2>
-                <button onClick={() => setIsBannerModalOpen(true)} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+                <button onClick={() => setIsBannerModalOpen(true)} style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   + Upload Banner
                 </button>
               </div>
@@ -576,11 +579,11 @@ function OffersEvents() {
             </div>
           ) : activeTab === 'Hub Management' ? (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <h2 style={{ margin: 0, color: '#334155' }}>Hub Management</h2>
                 <button 
                   onClick={() => setIsHubModalOpen(true)} 
-                  style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                  style={{ padding: '10px 20px', backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}
                 >
                   + Add New Hub
                 </button>
