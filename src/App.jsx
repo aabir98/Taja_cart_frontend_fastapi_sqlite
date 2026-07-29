@@ -403,8 +403,8 @@ function App() {
       return;
     }
 
-    if (!deliveryDetails.name || !deliveryDetails.phone || !deliveryDetails.street || !deliveryDetails.city) {
-      alert("Please fill in your Name, Phone Number, Street, and City.");
+    if (!deliveryDetails.building) {
+      alert("Please fill in your Building Name / House No.");
       return;
     }
 
