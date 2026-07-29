@@ -8,6 +8,7 @@ function Store() {
   
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stockFilter, setStockFilter] = useState('all');
 
   // Modals
   const [editingCategory, setEditingCategory] = useState(null);
@@ -132,7 +133,13 @@ function Store() {
     }
   };
 
-  const currentProducts = products.filter(p => p.category_id === activeCategory);
+  let currentProducts = products.filter(p => p.category_id === activeCategory);
+  if (stockFilter === 'in_stock') currentProducts = currentProducts.filter(p => p.in_stock !== 0);
+  if (stockFilter === 'out_of_stock') currentProducts = currentProducts.filter(p => p.in_stock === 0);
+
+  let currentDeals = deals;
+  if (stockFilter === 'in_stock') currentDeals = currentDeals.filter(p => p.in_stock !== 0);
+  if (stockFilter === 'out_of_stock') currentDeals = currentDeals.filter(p => p.in_stock === 0);
 
   if (loading) return <div>Loading store data...</div>;
 
@@ -185,23 +192,34 @@ function Store() {
                   <h3 style={{ margin: 0 }}>Deals of the Day</h3>
                   <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Maximum 10 deals can be active.</p>
                 </div>
-                <button 
-                  onClick={() => {
-                    if (deals.length >= 10) return alert("Maximum 10 deals reached.");
-                    setEditingDeal({ name: '', quantity: '', currentPrice: '', cutPrice: '', rating: 4.5, image: '' });
-                  }}
-                  disabled={deals.length >= 10}
-                  style={{ backgroundColor: deals.length >= 10 ? '#cbd5e1' : '#eab308', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: deals.length >= 10 ? 'not-allowed' : 'pointer' }}
-                >
-                  + Add Deal
-                </button>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <select 
+                    value={stockFilter} 
+                    onChange={(e) => setStockFilter(e.target.value)}
+                    style={{ padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0', color: '#334155' }}
+                  >
+                    <option value="all">All Items</option>
+                    <option value="in_stock">In Stock</option>
+                    <option value="out_of_stock">Out of Stock</option>
+                  </select>
+                  <button 
+                    onClick={() => {
+                      if (deals.length >= 10) return alert("Maximum 10 deals reached.");
+                      setEditingDeal({ name: '', quantity: '', currentPrice: '', cutPrice: '', rating: 4.5, image: '' });
+                    }}
+                    disabled={deals.length >= 10}
+                    style={{ backgroundColor: deals.length >= 10 ? '#cbd5e1' : '#eab308', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: deals.length >= 10 ? 'not-allowed' : 'pointer' }}
+                  >
+                    + Add Deal
+                  </button>
+                </div>
               </div>
 
-              {deals.length === 0 ? (
-                <p style={{ color: '#64748b' }}>No deals of the day added yet.</p>
+              {currentDeals.length === 0 ? (
+                <p style={{ color: '#64748b' }}>No deals found.</p>
               ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
-                  {deals.map(p => (
+                  {currentDeals.map(p => (
                     <div key={p.id} style={{ border: '1px solid #fde047', borderRadius: '8px', padding: '12px', display: 'flex', flexDirection: 'column', backgroundColor: '#fefce8' }}>
                       <img src={p.image?.startsWith('/uploads') ? `https://api.tajacart.in${p.image}` : p.image} alt={p.name} style={{ width: '100%', height: '100px', objectFit: 'contain', marginBottom: '12px' }} />
                       <h4 style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#854d0e' }}>{p.name}</h4>
@@ -229,12 +247,23 @@ function Store() {
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <h3 style={{ margin: 0 }}>Products in Category</h3>
-                <button 
-                  onClick={() => setEditingProduct({ name: '', quantity: '', currentPrice: '', cutPrice: '', rating: 4.5, image: '' })}
-                  style={{ backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
-                >
-                  + Add Product
-                </button>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <select 
+                    value={stockFilter} 
+                    onChange={(e) => setStockFilter(e.target.value)}
+                    style={{ padding: '8px', borderRadius: '8px', border: '1px solid #e2e8f0', color: '#334155' }}
+                  >
+                    <option value="all">All Items</option>
+                    <option value="in_stock">In Stock</option>
+                    <option value="out_of_stock">Out of Stock</option>
+                  </select>
+                  <button 
+                    onClick={() => setEditingProduct({ name: '', quantity: '', currentPrice: '', cutPrice: '', rating: 4.5, image: '' })}
+                    style={{ backgroundColor: 'var(--primary-green)', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+                  >
+                    + Add Product
+                  </button>
+                </div>
               </div>
 
               {currentProducts.length === 0 ? (
