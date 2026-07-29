@@ -932,14 +932,16 @@ function App() {
               {searchResults.map((item, idx) => {
                 const qty = cart[item.name] || 0;
                 return (
-                  <div key={idx} className="product-card">
+                  <div key={idx} className={`product-card ${item.in_stock === 0 ? 'out-of-stock' : ''}`}>
                     <div className="product-image-container">
                       {item.image ? (
                         <img src={item.image?.startsWith('/uploads') ? `https://api.tajacart.in${item.image}` : item.image} alt={item.name} className="product-image" />
                       ) : (
                         <span style={{ fontSize: '48px' }}>{item.emoji}</span>
                       )}
-                      {cart[item.name] ? (
+                      {item.in_stock === 0 ? (
+                        <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
+                      ) : cart[item.name] ? (
                         <div className="quantity-control">
                           <button className="qty-btn" onClick={() => updateCart(item.name, -1)}>-</button>
                           <span className="qty-text">{cart[item.name]}</span>
@@ -1007,14 +1009,16 @@ function App() {
         <div className="veggies-dropdown-section">
           <div className="product-scroll-container">
             {currentProductList.map((product, idx) => (
-              <div key={idx} className="product-card">
+              <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`}>
                 <div className="product-image-container">
                   {product.image ? (
                     <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
                   ) : (
                     <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                   )}
-                  {cart[product.name] ? (
+                  {product.in_stock === 0 ? (
+                    <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
+                  ) : cart[product.name] ? (
                     <div className="quantity-control">
                       <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
                       <span className="qty-text">{cart[product.name]}</span>
@@ -1156,14 +1160,16 @@ function App() {
         ) : (
           <div className="product-scroll-container">
             {dealsOfTheDay.map((product, idx) => (
-              <div key={idx} className="product-card">
+              <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`}>
                 <div className="product-image-container">
                   {product.image ? (
                     <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
                   ) : (
                     <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                   )}
-                  {cart[product.name] ? (
+                  {product.in_stock === 0 ? (
+                    <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
+                  ) : cart[product.name] ? (
                     <div className="quantity-control">
                       <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
                       <span className="qty-text">{cart[product.name]}</span>
@@ -1283,14 +1289,16 @@ function App() {
           <div className="category-content">
             <div className="product-grid">
               {(categoryData[activeCategory === 'All' ? 'Veggies' : activeCategory] || []).map((product, idx) => (
-                <div key={idx} className="product-card" style={{ minWidth: 'auto', width: '100%', maxWidth: '100%', margin: 0 }}>
+                <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`} style={{ minWidth: 'auto', width: '100%', maxWidth: '100%', margin: 0 }}>
                   <div className="product-image-container">
                     {product.image ? (
                       <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
                     ) : (
                       <span style={{ fontSize: '48px' }}>{product.emoji}</span>
                     )}
-                    {cart[product.name] ? (
+                    {product.in_stock === 0 ? (
+                      <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
+                    ) : cart[product.name] ? (
                       <div className="quantity-control">
                         <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
                         <span className="qty-text">{cart[product.name]}</span>

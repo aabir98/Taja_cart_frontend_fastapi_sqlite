@@ -73,6 +73,8 @@ function Store() {
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const inStockVal = formData.get('in_stock') === 'on' ? 1 : 0;
+    formData.set('in_stock', inStockVal);
     formData.append('category_id', activeCategory);
 
     if (editingProduct.id) {
@@ -100,6 +102,8 @@ function Store() {
   const handleSaveDeal = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const inStockVal = formData.get('in_stock') === 'on' ? 1 : 0;
+    formData.set('in_stock', inStockVal);
 
     if (editingDeal.id) {
       await fetch(`https://api.tajacart.in/api/deals/${editingDeal.id}`, {
@@ -210,6 +214,7 @@ function Store() {
                         </div>
                         <span style={{ backgroundColor: '#fef08a', color: '#854d0e', padding: '2px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold' }}>★ {p.rating}</span>
                       </div>
+                      {p.in_stock === 0 && <div style={{ color: 'red', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock</div>}
                       
                       <div style={{ marginTop: 'auto', display: 'flex', gap: '8px' }}>
                         <button onClick={() => setEditingDeal(p)} style={{ flex: 1, padding: '6px', backgroundColor: 'white', border: '1px solid #fde047', color: '#854d0e', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Edit</button>
@@ -249,6 +254,7 @@ function Store() {
                         </div>
                         <span style={{ backgroundColor: '#f0fdf4', color: '#15803d', padding: '2px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold' }}>★ {p.rating}</span>
                       </div>
+                      {p.in_stock === 0 && <div style={{ color: 'red', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock</div>}
                       
                       <div style={{ marginTop: 'auto', display: 'flex', gap: '8px' }}>
                         <button onClick={() => setEditingProduct(p)} style={{ flex: 1, padding: '6px', backgroundColor: '#f1f5f9', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Edit</button>
@@ -311,6 +317,10 @@ function Store() {
                 <label style={{ fontSize: '12px', color: '#64748b' }}>Rating (e.g. 4.5)</label>
                 <input name="rating" type="number" step="0.1" max="5" min="1" defaultValue={editingProduct.rating} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }} required />
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                <input name="in_stock" type="checkbox" defaultChecked={editingProduct.in_stock !== 0} id="product_in_stock" />
+                <label htmlFor="product_in_stock" style={{ fontSize: '12px', color: '#64748b', cursor: 'pointer' }}>In Stock</label>
+              </div>
               <div>
                 <label style={{ fontSize: '12px', color: '#64748b' }}>Product Image</label>
                 <input name="image" type="file" accept="image/*" style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }} />
@@ -353,6 +363,10 @@ function Store() {
               <div>
                 <label style={{ fontSize: '12px', color: '#a16207' }}>Rating (e.g. 4.5)</label>
                 <input name="rating" type="number" step="0.1" max="5" min="1" defaultValue={editingDeal.rating} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #fde047', boxSizing: 'border-box' }} required />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                <input name="in_stock" type="checkbox" defaultChecked={editingDeal.in_stock !== 0} id="deal_in_stock" />
+                <label htmlFor="deal_in_stock" style={{ fontSize: '12px', color: '#a16207', cursor: 'pointer' }}>In Stock</label>
               </div>
               <div>
                 <label style={{ fontSize: '12px', color: '#a16207' }}>Product Image</label>
