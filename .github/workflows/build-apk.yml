@@ -38,7 +38,7 @@ jobs:
         run: |
           sed -i 's/\r$//' gradlew
           chmod +x ./gradlew
-          ./gradlew bundleRelease -Pandroid.injected.signing.store.file=taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
+          ./gradlew bundleRelease -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/app/taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
