@@ -957,8 +957,8 @@ function App() {
                       {item.in_stock === 0 && (
                         <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
                       )}
-                      <div className={`price-row ${item.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className={`price-row ${item.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                           <span className="current-price">₹{item.currentPrice}</span>
                           <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{item.cutPrice}</span>
                           {item.cutPrice > item.currentPrice && (
@@ -1042,8 +1042,8 @@ function App() {
                   {product.in_stock === 0 && (
                     <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
                   )}
-                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
                       {product.cutPrice > product.currentPrice && (
@@ -1201,8 +1201,8 @@ function App() {
                   {product.in_stock === 0 && (
                     <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
                   )}
-                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
                       {product.cutPrice > product.currentPrice && (
@@ -1338,8 +1338,8 @@ function App() {
                     {product.in_stock === 0 && (
                       <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
                     )}
-                    <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                         <span className="current-price">₹{product.currentPrice}</span>
                         <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
                         {product.cutPrice > product.currentPrice && (
