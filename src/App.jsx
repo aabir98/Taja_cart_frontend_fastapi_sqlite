@@ -952,8 +952,15 @@ function App() {
                       )}
                     </div>
                     <div className="product-details">
-                      <div className="price-row">
-                        <span className="current-price">₹{item.currentPrice}</span>
+                      <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span className="current-price">₹{item.currentPrice}</span>
+                          <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{item.cutPrice}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f0fdf4', padding: '2px 6px', borderRadius: '4px' }}>
+                          <span style={{ fontSize: '12px', color: '#15803d', fontWeight: 'bold' }}>{item.rating}</span>
+                          <span style={{ fontSize: '10px' }}>⭐</span>
+                        </div>
                       </div>
                       <h3 className="product-name">{item.name}</h3>
                       <p className="product-quantity">{item.quantity}</p>
