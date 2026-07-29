@@ -935,26 +935,29 @@ function App() {
                   <div key={idx} className={`product-card ${item.in_stock === 0 ? 'out-of-stock' : ''}`}>
                     <div className="product-image-container">
                       {item.image ? (
-                        <img src={item.image?.startsWith('/uploads') ? `https://api.tajacart.in${item.image}` : item.image} alt={item.name} className="product-image" />
+                        <img src={item.image?.startsWith('/uploads') ? `https://api.tajacart.in${item.image}` : item.image} alt={item.name} className={`product-image ${item.in_stock === 0 ? 'greyed-out' : ''}`} />
                       ) : (
-                        <span style={{ fontSize: '48px' }}>{item.emoji}</span>
+                        <span style={{ fontSize: '48px' }} className={item.in_stock === 0 ? 'greyed-out' : ''}>{item.emoji}</span>
                       )}
-                      {item.in_stock === 0 ? (
-                        <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
-                      ) : cart[item.name] ? (
-                        <div className="quantity-control">
-                          <button className="qty-btn" onClick={() => updateCart(item.name, -1)}>-</button>
-                          <span className="qty-text">{cart[item.name]}</span>
-                          <button className="qty-btn" onClick={() => updateCart(item.name, 1)}>+</button>
-                        </div>
-                      ) : (
-                        <button className="add-btn" onClick={() => updateCart(item.name, 1)}>
-                          <span className="plus-sign">+</span>
-                        </button>
+                      {item.in_stock !== 0 && (
+                        cart[item.name] ? (
+                          <div className="quantity-control">
+                            <button className="qty-btn" onClick={() => updateCart(item.name, -1)}>-</button>
+                            <span className="qty-text">{cart[item.name]}</span>
+                            <button className="qty-btn" onClick={() => updateCart(item.name, 1)}>+</button>
+                          </div>
+                        ) : (
+                          <button className="add-btn" onClick={() => updateCart(item.name, 1)}>
+                            <span className="plus-sign">+</span>
+                          </button>
+                        )
                       )}
                     </div>
                     <div className="product-details">
-                      <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      {item.in_stock === 0 && (
+                        <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
+                      )}
+                      <div className={`price-row ${item.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span className="current-price">₹{item.currentPrice}</span>
                           <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{item.cutPrice}</span>
@@ -1012,26 +1015,29 @@ function App() {
               <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`}>
                 <div className="product-image-container">
                   {product.image ? (
-                    <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
+                    <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className={`product-image ${product.in_stock === 0 ? 'greyed-out' : ''}`} />
                   ) : (
-                    <span style={{ fontSize: '48px' }}>{product.emoji}</span>
+                    <span style={{ fontSize: '48px' }} className={product.in_stock === 0 ? 'greyed-out' : ''}>{product.emoji}</span>
                   )}
-                  {product.in_stock === 0 ? (
-                    <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
-                  ) : cart[product.name] ? (
-                    <div className="quantity-control">
-                      <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
-                      <span className="qty-text">{cart[product.name]}</span>
-                      <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
-                    </div>
-                  ) : (
-                    <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
-                      <span className="plus-sign">+</span>
-                    </button>
+                  {product.in_stock !== 0 && (
+                    cart[product.name] ? (
+                      <div className="quantity-control">
+                        <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
+                        <span className="qty-text">{cart[product.name]}</span>
+                        <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
+                      </div>
+                    ) : (
+                      <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
+                        <span className="plus-sign">+</span>
+                      </button>
+                    )
                   )}
                 </div>
                 <div className="product-details">
-                  <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  {product.in_stock === 0 && (
+                    <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
+                  )}
+                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
@@ -1163,26 +1169,29 @@ function App() {
               <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`}>
                 <div className="product-image-container">
                   {product.image ? (
-                    <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
+                    <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className={`product-image ${product.in_stock === 0 ? 'greyed-out' : ''}`} />
                   ) : (
-                    <span style={{ fontSize: '48px' }}>{product.emoji}</span>
+                    <span style={{ fontSize: '48px' }} className={product.in_stock === 0 ? 'greyed-out' : ''}>{product.emoji}</span>
                   )}
-                  {product.in_stock === 0 ? (
-                    <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
-                  ) : cart[product.name] ? (
-                    <div className="quantity-control">
-                      <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
-                      <span className="qty-text">{cart[product.name]}</span>
-                      <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
-                    </div>
-                  ) : (
-                    <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
-                      <span className="plus-sign">+</span>
-                    </button>
+                  {product.in_stock !== 0 && (
+                    cart[product.name] ? (
+                      <div className="quantity-control">
+                        <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
+                        <span className="qty-text">{cart[product.name]}</span>
+                        <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
+                      </div>
+                    ) : (
+                      <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
+                        <span className="plus-sign">+</span>
+                      </button>
+                    )
                   )}
                 </div>
                 <div className="product-details">
-                  <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  {product.in_stock === 0 && (
+                    <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
+                  )}
+                  <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
@@ -1292,26 +1301,29 @@ function App() {
                 <div key={idx} className={`product-card ${product.in_stock === 0 ? 'out-of-stock' : ''}`} style={{ minWidth: 'auto', width: '100%', maxWidth: '100%', margin: 0 }}>
                   <div className="product-image-container">
                     {product.image ? (
-                      <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className="product-image" />
+                      <img src={product.image?.startsWith('/uploads') ? `https://api.tajacart.in${product.image}` : product.image} alt={product.name} className={`product-image ${product.in_stock === 0 ? 'greyed-out' : ''}`} />
                     ) : (
-                      <span style={{ fontSize: '48px' }}>{product.emoji}</span>
+                      <span style={{ fontSize: '48px' }} className={product.in_stock === 0 ? 'greyed-out' : ''}>{product.emoji}</span>
                     )}
-                    {product.in_stock === 0 ? (
-                      <div className="out-of-stock-badge">Out of Stock. Coming Soon</div>
-                    ) : cart[product.name] ? (
-                      <div className="quantity-control">
-                        <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
-                        <span className="qty-text">{cart[product.name]}</span>
-                        <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
-                      </div>
-                    ) : (
-                      <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
-                        <span className="plus-sign">+</span>
-                      </button>
+                    {product.in_stock !== 0 && (
+                      cart[product.name] ? (
+                        <div className="quantity-control">
+                          <button className="qty-btn" onClick={() => updateCart(product.name, -1)}>-</button>
+                          <span className="qty-text">{cart[product.name]}</span>
+                          <button className="qty-btn" onClick={() => updateCart(product.name, 1)}>+</button>
+                        </div>
+                      ) : (
+                        <button className="add-btn" onClick={() => updateCart(product.name, 1)}>
+                          <span className="plus-sign">+</span>
+                        </button>
+                      )
                     )}
                   </div>
                   <div className="product-details">
-                    <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    {product.in_stock === 0 && (
+                      <div style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px' }}>Out of Stock. Coming Soon</div>
+                    )}
+                    <div className={`price-row ${product.in_stock === 0 ? 'greyed-out' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span className="current-price">₹{product.currentPrice}</span>
                         <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
