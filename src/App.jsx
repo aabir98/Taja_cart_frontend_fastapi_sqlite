@@ -961,6 +961,11 @@ function App() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span className="current-price">₹{item.currentPrice}</span>
                           <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{item.cutPrice}</span>
+                          {item.cutPrice > item.currentPrice && (
+                            <span style={{ color: '#16a34a', fontSize: '11px', fontWeight: 'bold', marginLeft: '4px' }}>
+                              {Math.round(Math.abs(item.cutPrice - item.currentPrice) / item.cutPrice * 100)}% off
+                            </span>
+                          )}
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f0fdf4', padding: '2px 6px', borderRadius: '4px' }}>
                           <span style={{ fontSize: '12px', color: '#15803d', fontWeight: 'bold' }}>{item.rating}</span>
@@ -1041,6 +1046,11 @@ function App() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
+                      {product.cutPrice > product.currentPrice && (
+                        <span style={{ color: '#16a34a', fontSize: '11px', fontWeight: 'bold', marginLeft: '4px' }}>
+                          {Math.round(Math.abs(product.cutPrice - product.currentPrice) / product.cutPrice * 100)}% off
+                        </span>
+                      )}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f0fdf4', padding: '2px 6px', borderRadius: '4px' }}>
                       <span style={{ fontSize: '12px', color: '#15803d', fontWeight: 'bold' }}>{product.rating}</span>
@@ -1195,6 +1205,11 @@ function App() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span className="current-price">₹{product.currentPrice}</span>
                       <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
+                      {product.cutPrice > product.currentPrice && (
+                        <span style={{ color: '#16a34a', fontSize: '11px', fontWeight: 'bold', marginLeft: '4px' }}>
+                          {Math.round(Math.abs(product.cutPrice - product.currentPrice) / product.cutPrice * 100)}% off
+                        </span>
+                      )}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f0fdf4', padding: '2px 6px', borderRadius: '4px' }}>
                       <span style={{ fontSize: '12px', color: '#15803d', fontWeight: 'bold' }}>{product.rating}</span>
@@ -1327,6 +1342,11 @@ function App() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span className="current-price">₹{product.currentPrice}</span>
                         <span style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '12px' }}>₹{product.cutPrice}</span>
+                        {product.cutPrice > product.currentPrice && (
+                          <span style={{ color: '#16a34a', fontSize: '11px', fontWeight: 'bold', marginLeft: '4px' }}>
+                            {Math.round(Math.abs(product.cutPrice - product.currentPrice) / product.cutPrice * 100)}% off
+                          </span>
+                        )}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f0fdf4', padding: '2px 6px', borderRadius: '4px' }}>
                         <span style={{ fontSize: '12px', color: '#15803d', fontWeight: 'bold' }}>{product.rating}</span>
