@@ -1075,7 +1075,7 @@ function App() {
         overflowX: 'auto',
         gap: '16px',
         padding: '0 16px',
-        margin: '8px 0',
+        margin: '-8px 0 8px 0',
         scrollSnapType: 'x mandatory'
       }}>
         {/* Banner 1 */}
@@ -1084,6 +1084,7 @@ function App() {
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
+            height: '115px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1096,9 +1097,10 @@ function App() {
             src="/banner1.png" 
             alt="Free and Fast Delivery" 
             style={{
-              width: '100%',
+              width: '118%',
               height: 'auto',
-              objectFit: 'contain'
+              flexShrink: 0,
+              mixBlendMode: 'darken'
             }} 
           />
         </div>
@@ -1108,6 +1110,7 @@ function App() {
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
+            height: '115px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1120,9 +1123,10 @@ function App() {
             src="/banner2.png" 
             alt="Farm Fresh" 
             style={{
-              width: '100%',
+              width: '118%',
               height: 'auto',
-              objectFit: 'contain'
+              flexShrink: 0,
+              mixBlendMode: 'darken'
             }} 
           />
         </div>
@@ -1132,6 +1136,7 @@ function App() {
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
+            height: '115px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1144,9 +1149,10 @@ function App() {
             src="/banner3.png" 
             alt="100% Trusted" 
             style={{
-              width: '100%',
+              width: '118%',
               height: 'auto',
-              objectFit: 'contain'
+              flexShrink: 0,
+              mixBlendMode: 'darken'
             }} 
           />
         </div>
