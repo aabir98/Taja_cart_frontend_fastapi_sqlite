@@ -1064,7 +1064,7 @@ function App() {
             ))}
           </div>
           <div className="see-all-container">
-            <button className="see-all-btn" onClick={() => setActiveTab('category')}>See all ▸</button>
+            <button className="see-all-btn" onClick={() => { setActiveTab('category'); if (activeCategory === 'All') setActiveCategory('Veggies'); }}>See all ▸</button>
           </div>
         </div>
       )}
@@ -1080,76 +1080,73 @@ function App() {
       }}>
         {/* Banner 1 */}
         <div 
-          onClick={() => setActiveTab('category')}
+          onClick={() => { setActiveTab('category'); if (activeCategory === 'All') setActiveCategory('Veggies'); }}
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
-            height: '135px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            borderRadius: '12px'
           }}
         >
           <img 
             src="/banner1.png" 
             alt="Free and Fast Delivery" 
             style={{
-              width: '115%',
+              width: '100%',
               height: 'auto',
-              flexShrink: 0,
-              mixBlendMode: 'darken'
+              objectFit: 'contain'
             }} 
           />
         </div>
         {/* Banner 2 */}
         <div 
-          onClick={() => setActiveTab('category')}
+          onClick={() => { setActiveTab('category'); if (activeCategory === 'All') setActiveCategory('Veggies'); }}
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
-            height: '135px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            borderRadius: '12px'
           }}
         >
           <img 
             src="/banner2.png" 
             alt="Farm Fresh" 
             style={{
-              width: '115%',
+              width: '100%',
               height: 'auto',
-              flexShrink: 0,
-              mixBlendMode: 'darken'
+              objectFit: 'contain'
             }} 
           />
         </div>
         {/* Banner 3 */}
         <div 
-          onClick={() => setActiveTab('category')}
+          onClick={() => { setActiveTab('category'); if (activeCategory === 'All') setActiveCategory('Veggies'); }}
           style={{
             flex: '0 0 100%',
             scrollSnapAlign: 'center',
-            height: '135px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            borderRadius: '12px'
           }}
         >
           <img 
             src="/banner3.png" 
             alt="100% Trusted" 
             style={{
-              width: '115%',
+              width: '100%',
               height: 'auto',
-              flexShrink: 0,
-              mixBlendMode: 'darken'
+              objectFit: 'contain'
             }} 
           />
         </div>
@@ -1359,7 +1356,7 @@ function App() {
                 </div>
               ))}
             </div>
-            {!(categoryData[activeCategory === 'All' ? 'Vegetables' : activeCategory] || []).length && (
+            {!(categoryData[activeCategory === 'All' ? 'Veggies' : activeCategory] || []).length && (
               <p style={{ textAlign: 'center', marginTop: '40px', color: '#64748b', fontSize: '14px' }}>No products found.</p>
             )}
           </div>
@@ -1900,11 +1897,11 @@ function App() {
 
       {/* Bottom Nav */}
       <div className="bottom-nav">
-        <div className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
+        <div className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setActiveCategory('All'); }}>
           <Home size={24} />
           <span>Home</span>
         </div>
-        <div className={`nav-tab ${activeTab === 'category' ? 'active' : ''}`} onClick={() => setActiveTab('category')}>
+        <div className={`nav-tab ${activeTab === 'category' ? 'active' : ''}`} onClick={() => { setActiveTab('category'); if (activeCategory === 'All') setActiveCategory('Veggies'); }}>
           <Grid size={24} />
           <span>Category</span>
         </div>
