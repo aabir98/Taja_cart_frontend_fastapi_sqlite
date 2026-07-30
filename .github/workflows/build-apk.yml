@@ -30,6 +30,9 @@ jobs:
           distribution: 'zulu'
           java-version: '21'
 
+      - name: Print Keystore SHA-1 Fingerprint
+        run: keytool -list -v -keystore android/app/taja-release.keystore -alias taja -storepass tajacart2026 | grep SHA1
+
       - name: Sync Capacitor
         run: npx cap sync android
 

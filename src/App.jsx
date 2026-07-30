@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { Capacitor } from '@capacitor/core';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { PushNotifications } from '@capacitor/push-notifications';
 import { jwtDecode } from "jwt-decode";
 import AddressMap from './components/AddressMap';
 import { generateInvoice } from './utils/generateInvoice';
@@ -230,6 +231,20 @@ function App() {
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       GoogleAuth.initialize();
+      
+      PushNotifications.requestPermissions().then(result => {
+        if (result.receive === 'granted') {
+          PushNotifications.register();
+        }
+      });
+
+      PushNotifications.addListener('registration', (token) => {
+        fetch('https://api.tajacart.in/api/device-tokens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token.value })
+        }).catch(e => console.error('Failed to save token', e));
+      });
     }
   }, []);
 
