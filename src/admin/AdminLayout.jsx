@@ -10,6 +10,9 @@ import OffersEvents from './OffersEvents';
 import Notifications from './Notifications';
 import Settings from './Settings';
 import './admin.css';
+import { Capacitor } from '@capacitor/core';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { App as CapacitorApp } from '@capacitor/app';
 
 function AdminLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +51,33 @@ function AdminLayout() {
   };
 
   const setupPushNotifications = async () => {
+    if (Capacitor.isNativePlatform()) {
+      PushNotifications.requestPermissions().then(result => {
+        if (result.receive === 'granted') {
+          PushNotifications.register();
+        }
+      });
+
+      PushNotifications.addListener('registration', (token) => {
+        fetch('https://api.tajacart.in/api/device-tokens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token.value, role: 'admin' })
+        }).catch(e => console.error('Failed to save admin token', e));
+      });
+
+      PushNotifications.addListener('pushNotificationReceived', (notification) => {
+        fetchUnreadAlerts();
+      });
+
+      CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+        if (isActive) {
+          fetchUnreadAlerts();
+        }
+      });
+      return;
+    }
+
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
     try {
       const permission = await Notification.requestPermission();

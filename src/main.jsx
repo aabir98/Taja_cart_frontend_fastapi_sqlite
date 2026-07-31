@@ -6,13 +6,21 @@ import './index.css'
 import App from './App.jsx'
 import AdminLayout from './admin/AdminLayout.jsx'
 
+const AppTarget = import.meta.env.VITE_APP_TARGET === 'admin' ? AdminLayout : App;
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GoogleOAuthProvider clientId="969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com">
       <BrowserRouter>
         <Routes>
-          <Route path="/*" element={<App />} />
-          <Route path="/admin/*" element={<AdminLayout />} />
+          {import.meta.env.VITE_APP_TARGET === 'admin' ? (
+            <Route path="/*" element={<AdminLayout />} />
+          ) : (
+            <>
+              <Route path="/*" element={<App />} />
+              <Route path="/admin/*" element={<AdminLayout />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
