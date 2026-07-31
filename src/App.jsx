@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { jwtDecode } from "jwt-decode";
@@ -227,7 +228,7 @@ function App() {
     return R * c;
   };
 
-  // Initialize Google Auth for native platform
+  // Initialize Native Features
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       GoogleAuth.initialize({
@@ -248,6 +249,20 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: token.value })
         }).catch(e => console.error('Failed to save token', e));
+      });
+
+      PushNotifications.addListener('pushNotificationReceived', (notification) => {
+        // Trigger a background refresh when notification arrives
+        const event = new Event('taja-app-refresh');
+        window.dispatchEvent(event);
+      });
+
+      CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+        if (isActive) {
+          // Trigger a refresh when app comes to foreground
+          const event = new Event('taja-app-refresh');
+          window.dispatchEvent(event);
+        }
       });
     }
   }, []);
@@ -329,6 +344,10 @@ function App() {
       }
     };
     fetchInventory();
+
+    const handleRefresh = () => fetchInventory();
+    window.addEventListener('taja-app-refresh', handleRefresh);
+    return () => window.removeEventListener('taja-app-refresh', handleRefresh);
   }, []);
 
   // Auto-slide Banners Every 4 seconds
@@ -350,27 +369,35 @@ function App() {
 
   // Handle Search InputOrders and Addresses from Backend
   useEffect(() => {
-    if (user && user.email) {
-      fetch(`https://api.tajacart.in/api/addresses/${user.email}`)
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) setSavedAddresses(data);
-        })
-        .catch(err => console.error("Error fetching addresses:", err));
-    } else {
-      setSavedAddresses([]);
-    }
+    const fetchUserData = () => {
+      if (user && user.email) {
+        fetch(`https://api.tajacart.in/api/addresses/${user.email}`)
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data)) setSavedAddresses(data);
+          })
+          .catch(err => console.error("Error fetching addresses:", err));
+      } else {
+        setSavedAddresses([]);
+      }
 
-    if (user && user.phone) {
-      fetch(`https://api.tajacart.in/api/orders/user/${user.phone}`)
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) setPlacedOrders(data);
-        })
-        .catch(err => console.error("Error fetching orders:", err));
-    } else {
-      setPlacedOrders([]);
-    }
+      if (user && user.phone) {
+        fetch(`https://api.tajacart.in/api/orders/user/${user.phone}`)
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data)) setPlacedOrders(data);
+          })
+          .catch(err => console.error("Error fetching orders:", err));
+      } else {
+        setPlacedOrders([]);
+      }
+    };
+
+    fetchUserData();
+
+    const handleRefresh = () => fetchUserData();
+    window.addEventListener('taja-app-refresh', handleRefresh);
+    return () => window.removeEventListener('taja-app-refresh', handleRefresh);
   }, [user, activeTab]); // Re-fetch on tab switch or user change
 
   // Collect all unique products for search
@@ -1886,7 +1913,7 @@ function App() {
       {/* Floating WhatsApp Button */}
       <div style={{
         position: 'fixed',
-        bottom: '80px',
+        bottom: '100px',
         left: '50%',
         transform: 'translateX(-50%)',
         width: '100%',

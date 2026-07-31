@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 import L from 'leaflet';
 
 // Reliable custom icon using an emoji instead of external images which can fail
@@ -97,19 +99,30 @@ export default function AddressMap({ lat, lng, onChange }) {
     setSearchResults([]);
   };
 
-  const handleGetCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          handleSetPosition({ lat: latitude, lng: longitude });
-        },
-        (err) => {
-          alert("Could not fetch location. Please ensure location services are enabled.");
+  const handleGetCurrentLocation = async () => {
+    try {
+      if (Capacitor.isNativePlatform()) {
+        const permissions = await Geolocation.requestPermissions();
+        if (permissions.location !== 'granted') {
+          alert("Location permission denied. Please enable it in your phone settings.");
+          return;
         }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
+        const coordinates = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+        handleSetPosition({ lat: coordinates.coords.latitude, lng: coordinates.coords.longitude });
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              handleSetPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+            },
+            (err) => alert("Could not fetch location. Please ensure location services are enabled.")
+          );
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+    } catch (e) {
+      alert("Error fetching location: " + e.message);
     }
   };
 
