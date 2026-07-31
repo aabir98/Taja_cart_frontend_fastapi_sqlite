@@ -45,12 +45,15 @@ jobs:
           sed -i 's/<string name="app_name">Taja Cart<\/string>/<string name="app_name">Taja Admin<\/string>/g' android/app/src/main/res/values/strings.xml
           sed -i 's/<string name="title_activity_main">Taja Cart<\/string>/<string name="title_activity_main">Taja Admin<\/string>/g' android/app/src/main/res/values/strings.xml
 
-      - name: Build Release APK and AAB
+      - name: Bypass Firebase google-services error
+        run: sed -i 's/com.taja.cart/com.taja.admin/g' android/app/google-services.json
+
+      - name: Build Release APK
         working-directory: ./android
         run: |
           sed -i 's/\r$//' gradlew
           chmod +x ./gradlew
-          ./gradlew assembleRelease bundleRelease -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/app/taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/app/taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
 
       - name: Upload Admin APK Artifact
         uses: actions/upload-artifact@v4
@@ -58,9 +61,4 @@ jobs:
           name: TajaAdmin-Release-APK
           path: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: Upload Admin AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TajaAdmin-Release-AAB
-          path: android/app/build/outputs/bundle/release/app-release.aab
 
