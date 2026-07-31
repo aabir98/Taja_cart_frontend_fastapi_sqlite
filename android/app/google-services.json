@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:969406446453:android:0f4323a426969439a5b13c",
+        "android_client_info": {
+          "package_name": "com.taja.cart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKnYOlmlcve8-nXQPC5XyZWE8nCXQYFms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:969406446453:android:164f5888a9e37800a5b13c",
         "android_client_info": {
           "package_name": "com.tajacart.app"
