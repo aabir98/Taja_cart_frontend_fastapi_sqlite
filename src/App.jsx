@@ -233,7 +233,7 @@ function App() {
       GoogleAuth.initialize({
         clientId: '969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
-        grantOfflineAccess: true
+        grantOfflineAccess: false
       });
 
       PushNotifications.requestPermissions().then(result => {
@@ -650,7 +650,7 @@ function App() {
       }
     } catch (err) {
       console.error('Google login error:', err);
-      alert("Google Login Failed on App: " + (err.code || "") + " - v3 " + (err.message || JSON.stringify(err)));
+      alert("Google Login Failed on App: " + (err.code || "") + " - v4 " + (err.message || JSON.stringify(err)));
     }
   };
 
