@@ -650,7 +650,12 @@ function App() {
       }
     } catch (err) {
       console.error('Google login error:', err);
-      alert("Google Login Failed on App: " + (err.code || "") + " - v4 " + (err.message || JSON.stringify(err)));
+      try {
+        if (Capacitor.isNativePlatform()) {
+          await GoogleAuth.signOut();
+        }
+      } catch(e) {}
+      alert("Google Login Failed on App: " + (err.code || "") + " - v5 " + (err.message || JSON.stringify(err)));
     }
   };
 
