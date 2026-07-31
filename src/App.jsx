@@ -230,7 +230,11 @@ function App() {
   // Initialize Google Auth for native platform
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      GoogleAuth.initialize();
+      GoogleAuth.initialize({
+        clientId: '969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+        grantOfflineAccess: true
+      });
 
       PushNotifications.requestPermissions().then(result => {
         if (result.receive === 'granted') {
@@ -645,8 +649,8 @@ function App() {
         setIsCollectingPhone(true);
       }
     } catch (err) {
-      console.error(err);
-      alert("Google Login Failed on App: " + (err.code || "") + " - v2 " + (err.message || JSON.stringify(err)));
+      console.error('Google login error:', err);
+      alert("Google Login Failed on App: " + (err.code || "") + " - v3 " + (err.message || JSON.stringify(err)));
     }
   };
 
