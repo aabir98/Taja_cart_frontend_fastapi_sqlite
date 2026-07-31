@@ -12,7 +12,20 @@
           "package_name": "com.taja.cart"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "969406446453-f679eo4oe4csft46qa62rb1fvp2b1uil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taja.cart",
+            "certificate_hash": "27968c0cf49b1774e4220dbfc72b87f79c6893e5"
+          }
+        },
+        {
+          "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBKnYOlmlcve8-nXQPC5XyZWE8nCXQYFms"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -31,7 +49,12 @@
           "package_name": "com.tajacart.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBKnYOlmlcve8-nXQPC5XyZWE8nCXQYFms"
@@ -39,7 +62,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

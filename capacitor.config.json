@@ -8,7 +8,7 @@
     },
     "GoogleAuth": {
       "scopes": ["profile", "email"],
-      "serverClientId": "718562371937-0ghlig3d9k1ovq5f2fflud7kuhdpgs58.apps.googleusercontent.com",
+      "serverClientId": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
       "forceCodeForRefreshToken": true
     }
   }
