@@ -1,4 +1,4 @@
-name: Build Admin Android App Bundle
+﻿name: Build Admin Android App Bundle
 
 on:
   push:
