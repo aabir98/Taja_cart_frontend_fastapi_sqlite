@@ -8,7 +8,7 @@ import AdminLayout from './admin/AdminLayout.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId="718562371937-0ghlig3d9k1ovq5f2fflud7kuhdpgs58.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com">
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<App />} />
