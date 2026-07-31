@@ -36,15 +36,21 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build Release APK
+      - name: Build Release APK and AAB
         working-directory: ./android
         run: |
           sed -i 's/\r$//' gradlew
           chmod +x ./gradlew
-          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/app/taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
+          ./gradlew assembleRelease bundleRelease -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/app/taja-release.keystore -Pandroid.injected.signing.store.password=tajacart2026 -Pandroid.injected.signing.key.alias=taja -Pandroid.injected.signing.key.password=tajacart2026
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TajaCart-Release-APK
           path: android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TajaCart-Release-AAB
+          path: android/app/build/outputs/bundle/release/app-release.aab
