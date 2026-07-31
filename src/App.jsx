@@ -646,7 +646,7 @@ function App() {
       }
     } catch (err) {
       console.error(err);
-      alert("Google Login Failed on App: " + (err.message || JSON.stringify(err)));
+      alert("Google Login Failed on App: " + (err.code || "") + " - " + (err.message || JSON.stringify(err)));
     }
   };
 
