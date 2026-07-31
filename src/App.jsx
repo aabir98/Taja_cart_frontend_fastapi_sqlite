@@ -655,7 +655,7 @@ function App() {
           await GoogleAuth.signOut();
         }
       } catch(e) {}
-      alert("Google Login Failed on App: " + (err.code || "") + " - v5 " + (err.message || JSON.stringify(err)));
+      alert("Google Login Failed on App: " + (err.code || "") + " - v6 " + (err.message || JSON.stringify(err)));
     }
   };
 
