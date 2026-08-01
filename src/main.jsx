@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import './index.css'
 import App from './App.jsx'
@@ -14,7 +14,10 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           {import.meta.env.VITE_APP_TARGET === 'admin' ? (
-            <Route path="/*" element={<AdminLayout />} />
+            <>
+              <Route path="/admin/*" element={<AdminLayout />} />
+              <Route path="/*" element={<Navigate to="/admin" replace />} />
+            </>
           ) : (
             <>
               <Route path="/*" element={<App />} />
