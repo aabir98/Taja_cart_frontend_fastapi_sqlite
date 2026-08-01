@@ -28,6 +28,10 @@ function Orders() {
 
   useEffect(() => {
     fetchOrders();
+
+    const handleRefresh = () => fetchOrders();
+    window.addEventListener('adminDataRefresh', handleRefresh);
+    return () => window.removeEventListener('adminDataRefresh', handleRefresh);
   }, []);
 
   const fetchOrders = async () => {

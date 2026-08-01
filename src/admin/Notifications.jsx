@@ -19,7 +19,14 @@ function Notifications() {
     fetchData();
     // Poll for new alerts every 30s
     const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
+    
+    const handleRefresh = () => fetchData();
+    window.addEventListener('adminDataRefresh', handleRefresh);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('adminDataRefresh', handleRefresh);
+    };
   }, []);
 
   const fetchData = async () => {

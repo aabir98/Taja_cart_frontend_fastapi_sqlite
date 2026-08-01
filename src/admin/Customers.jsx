@@ -10,6 +10,10 @@ function Customers() {
 
   useEffect(() => {
     fetchCustomers();
+
+    const handleRefresh = () => fetchCustomers();
+    window.addEventListener('adminDataRefresh', handleRefresh);
+    return () => window.removeEventListener('adminDataRefresh', handleRefresh);
   }, []);
 
   const fetchCustomers = async () => {

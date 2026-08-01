@@ -68,11 +68,13 @@ function AdminLayout() {
 
       PushNotifications.addListener('pushNotificationReceived', (notification) => {
         fetchUnreadAlerts();
+        window.dispatchEvent(new Event('adminDataRefresh'));
       });
 
       CapacitorApp.addListener('appStateChange', ({ isActive }) => {
         if (isActive) {
           fetchUnreadAlerts();
+          window.dispatchEvent(new Event('adminDataRefresh'));
         }
       });
       return;

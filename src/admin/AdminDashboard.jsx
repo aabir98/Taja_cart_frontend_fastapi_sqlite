@@ -10,6 +10,10 @@ function AdminDashboard() {
 
   useEffect(() => {
     fetchData();
+
+    const handleRefresh = () => fetchData();
+    window.addEventListener('adminDataRefresh', handleRefresh);
+    return () => window.removeEventListener('adminDataRefresh', handleRefresh);
   }, []);
 
   const fetchData = async () => {
