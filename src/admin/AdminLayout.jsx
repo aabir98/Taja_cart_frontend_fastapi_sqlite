@@ -22,7 +22,7 @@ function AdminLayout() {
   const location = useLocation();
 
   useEffect(() => {
-    const auth = sessionStorage.getItem('adminAuth');
+    const auth = localStorage.getItem('adminAuth');
     if (auth === 'true') {
       setIsAuthenticated(true);
     }
@@ -117,13 +117,13 @@ function AdminLayout() {
 
   const handleLogin = () => {
     setIsAuthenticated(true);
-    sessionStorage.setItem('adminAuth', 'true');
+    localStorage.setItem('adminAuth', 'true');
     navigate('/admin');
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('adminAuth');
+    localStorage.removeItem('adminAuth');
     navigate('/admin/login');
   };
 
