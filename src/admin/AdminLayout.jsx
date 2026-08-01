@@ -12,6 +12,7 @@ import Settings from './Settings';
 import './admin.css';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { App as CapacitorApp } from '@capacitor/app';
 
 function AdminLayout() {
@@ -52,6 +53,9 @@ function AdminLayout() {
 
   const setupPushNotifications = async () => {
     if (Capacitor.isNativePlatform()) {
+      // Request local notification permissions as well
+      await LocalNotifications.requestPermissions();
+      
       PushNotifications.requestPermissions().then(result => {
         if (result.receive === 'granted') {
           PushNotifications.register();
@@ -69,6 +73,19 @@ function AdminLayout() {
       PushNotifications.addListener('pushNotificationReceived', (notification) => {
         fetchUnreadAlerts();
         window.dispatchEvent(new Event('adminDataRefresh'));
+        
+        // Force a system notification banner since Capacitor swallows foreground push notifications
+        LocalNotifications.schedule({
+          notifications: [
+            {
+              title: notification.title || 'New Alert',
+              body: notification.body || 'You have a new update in the admin app.',
+              id: new Date().getTime(),
+              schedule: { at: new Date(Date.now() + 500) },
+              smallIcon: 'ic_stat_icon_config_sample' // Falls back to default if not set
+            }
+          ]
+        });
       });
 
       CapacitorApp.addListener('appStateChange', ({ isActive }) => {
