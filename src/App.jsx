@@ -233,6 +233,7 @@ function App() {
     if (Capacitor.isNativePlatform()) {
       GoogleAuth.initialize({
         clientId: '969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com',
+        serverClientId: '969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
         grantOfflineAccess: false
       });
@@ -682,7 +683,7 @@ function App() {
           await GoogleAuth.signOut();
         }
       } catch(e) {}
-      alert("Google Login Failed on App: " + (err.code || "") + " - v9 " + (err.message || JSON.stringify(err)));
+      alert("Google Login Failed on App: " + (err.code || "") + " - v10 " + (err.message || JSON.stringify(err)));
     }
   };
 
