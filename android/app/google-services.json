@@ -14,42 +14,21 @@
       },
       "oauth_client": [
         {
-          "client_id": "969406446453-f679eo4oe4csft46qa62rb1fvp2b1uil.apps.googleusercontent.com",
+          "client_id": "969406446453-1tlpqanbj8ips14bttt5ev7j6nelp77v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taja.cart",
+            "certificate_hash": "22b3416d3906990839f68a7305e187ca6252d738"
+          }
+        },
+        {
+          "client_id": "969406446453-8l9rk1h750jn8dgub1cl7sso7o86l4hn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.taja.cart",
             "certificate_hash": "27968c0cf49b1774e4220dbfc72b87f79c6893e5"
           }
         },
-        {
-          "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBKnYOlmlcve8-nXQPC5XyZWE8nCXQYFms"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:969406446453:android:164f5888a9e37800a5b13c",
-        "android_client_info": {
-          "package_name": "com.tajacart.app"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "969406446453-5pn863ir0og0e9jemmcpm3p3odvl73r1.apps.googleusercontent.com",
           "client_type": 3
